@@ -73,7 +73,132 @@ enum var_types match_var(var* v)
 	}
 }
 
-var* mkvar(char name[], size_t size);
+var* mkvar(char name[], size_t size)
+{
+	var *variable = malloc(sizeof(var));
+	unsigned char name_offset = 0; 
+	if(name[0] == '*')
+	{
+		variable->is_pointer = true;
+
+		// strip pointer markers and other invalid characters
+		name_offset = 1;
+		while(name[name_offset] == '*')
+			name_offset++;
+	}
+	else
+		variable->is_pointer = false;
+
+
+	// copy characters starting from offset (e.g. amount of pointer *'s to skip)
+	for(int i = 1; i < strlen(name); i++)
+	{
+		// safety -- buffer is only 32 bytes long
+		if(i == 32)
+		{
+			variable->name[31] = '\0';
+			break;
+		}
+
+		/* big switch statement for faster performance over 
+		   huge if-else chain */
+		switch(name[i])
+		{
+			case '*':
+				continue;
+				break;
+			case '^':
+				continue;
+				break;
+			case '.':
+				continue;
+				break;
+			case '!':
+				continue;
+				break;
+			case '?':
+				continue;
+				break;
+			case '/':
+				continue;
+				break;
+			case ':':
+				continue;
+				break;
+			case '(':
+				continue;
+				break;
+			case ')':
+				continue;
+				break;
+			case '[':
+				continue;
+				break;
+			case ']':
+				continue;
+				break;
+			case '{': 
+				continue;
+				break;
+			case '}':
+				continue;
+				break;
+			case '=':
+				continue;
+				break;
+			case '-':
+				continue;
+				break;
+			case '<':
+				continue;
+				break;
+			case '>':
+				continue;
+				break;
+			case '|': 
+				continue;
+				break;
+			case '%':
+				continue;
+				break;
+			case '$':
+				continue;
+				break;
+			case '#':
+				continue;
+				break;
+			case '@':
+				continue;
+				break;
+			case '`':
+				continue;
+				break;
+			case '~':
+				continue;
+				break;
+			case '+':
+				continue;
+				break;
+			case '&':
+				continue;
+				break;
+			case ';':
+				continue;
+				break;
+			case ',':
+				continue;
+				break;
+			default: // acceptable character
+				variable->name[i-1] = name[i];
+				break;
+		}
+	}
+
+
+
+
+
+}
 
 /* For use with var_remove (table function).
    Returns true if successful and false otherwise. */
